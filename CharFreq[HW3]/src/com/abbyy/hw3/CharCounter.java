@@ -22,9 +22,6 @@ public class CharCounter {
                 }
             }
         }
-        catch(IOException ex){
-            System.out.println(ex.getMessage());
-        }
     }
 
     public void GetStates(String outputFilePath){
