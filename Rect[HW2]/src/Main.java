@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Main {
 
-    static void Show(Integer[][] arr) {
+    static void ShowArray(Integer[][] arr) {
         for(int i=0; i < 6; i++) {
             for (int j = 0; j < 7; j++) {
                 System.out.print(arr[i][j] + " ");
@@ -13,7 +13,7 @@ public class Main {
         }
     }
 
-    public static void Order(Integer[][] arr) {
+    public static void OrderArray(Integer[][] arr) {
         int a = arr.length;
         for (int i=0; i < a; i++) {
             Arrays.sort(arr[i]);
@@ -29,10 +29,10 @@ public class Main {
                 ints[i][j] = rnd.nextInt(10);
             }
         }
-        Show(ints);
-        Order(ints);
+        ShowArray(ints);
+        OrderArray(ints);
         System.out.println("Sorted:");
-        Show(ints);
+        ShowArray(ints);
 
     }
 }
