@@ -1,2 +1,2 @@
-# android_abbyy
-Course android in abbyy
+# Android ABBYY Course
+Home work
