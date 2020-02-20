@@ -1,5 +1,5 @@
 package com.example.myapplication
-
+/*
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -11,3 +11,4 @@ class ParticalActivity : AppCompatActivity() {
         this.title = getString(R.string.sub_title)
     }
 }
+*/
