@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.view.*
@@ -16,10 +17,11 @@ class NoteViewHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.O
     }
 
     override fun onClick(v: View?) {
-        var context = itemView.context
+        Log.d("RecycleView", "CLICK!")
+        /*var context = itemView.context
         var intent = Intent(context, NoteActivity::class.java)
         intent.putExtra("note", note?.id)
-        context.startActivity(intent)
+        context.startActivity(intent)*/
     }
 
     fun bind(note: Note) {

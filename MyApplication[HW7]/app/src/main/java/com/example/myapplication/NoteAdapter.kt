@@ -14,7 +14,7 @@ class NoteAdapter (private val notes: List<Note>): RecyclerView.Adapter<NoteView
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val note = notes[position]
-        holder.bind(note)
+        //val note = notes[position]
+        //holder.bind(note)
     }
 }
