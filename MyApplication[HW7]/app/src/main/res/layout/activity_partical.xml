@@ -13,10 +13,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
-            android:src="@drawable/ic_launcher_foreground"
             android:layout_weight="50" />
         <TextView
-            android:id="@+id/noteTextView"
+            android:id="@+id/noteTextInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
@@ -24,6 +23,5 @@
             android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginBottom="@dimen/default_margin"
             android:layout_weight="50"
-            android:ellipsize="end"
-            android:text="@string/text" />
+            android:ellipsize="end" />
     </LinearLayout>

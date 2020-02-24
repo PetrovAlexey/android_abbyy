@@ -18,12 +18,12 @@ class NoteActivity : AppCompatActivity() {
 
         val imageView  = findViewById<View>(R.id.noteImageView)
 
-        val textView  = findViewById<View>(R.id.textInfo)
+        val textView  = findViewById<View>(R.id.noteTextInfo)
 
 
         val note = NoteRepository.getNoteWithId(noteId ?: 1)
         if (note != null) {
-            textView.noteTextView.text = note.text
+            textView.noteTextInfo.text = note.text
             imageView.noteImageView.setImageDrawable(getDrawable(note.drowableRes))
         }
     }

@@ -17,17 +17,16 @@ class NoteViewHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.O
     }
 
     override fun onClick(v: View?) {
-        Log.d("RecycleView", "CLICK!")
-        /*var context = itemView.context
+        var context = view.context
         var intent = Intent(context, NoteActivity::class.java)
         intent.putExtra("note", note?.id)
-        context.startActivity(intent)*/
+        context.startActivity(intent)
     }
 
     fun bind(note: Note) {
         this.note = note
-        view.noteTextView.text = note.text
-        //view.textDate.text = "Text"//SimpleDateFormat("yyyy - mm - dd").format(note.date)
-        view.noteImageView.setImageDrawable(view.context.getDrawable(note.drowableRes))
+        view.textInfo.text = note.text
+        view.textDate.text = SimpleDateFormat("yyyy - mm - dd").format(note.date)
+        view.imageView.setImageDrawable(view.context.getDrawable(note.drowableRes))
     }
 }
