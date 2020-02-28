@@ -5,14 +5,13 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
-class MainActivity : AppCompatActivity() {
+abstract class SingleFragmentActivity : AppCompatActivity() {
 
-    /*override fun createFragment(): Fragment {
-        return MainFragment.newInstance()
-    }*/
     private val layoutResId: Int
         @LayoutRes
         get() = R.layout.activity_fragment
+
+    protected abstract fun createFragment(): Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,25 +23,11 @@ class MainActivity : AppCompatActivity() {
 
         // ensures fragments already created will not be created
         if (fragment == null) {
-            fragment = MainFragment.newInstance()
+            fragment = createFragment()
             // create and commit a fragment transaction
             fm.beginTransaction()
                 .add(R.id.dynamicFragmentActivityContainer, fragment)
                 .commit()
         }
     }
-    /*override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fragment)
-        this.title = getString(R.string.app_title)
-        /*
-        val recyclerView = findViewById<RecyclerView>(R.id.RecyclerView)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        recyclerView.adapter = NoteAdapter(NoteRepository.listNotes())
-        */
-
-    }*/
-
 }
