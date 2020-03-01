@@ -9,14 +9,19 @@ import kotlinx.android.synthetic.main.activity_partical.view.*
 
 class NoteFragment : Fragment() {
 
-    private val NOTE_ID = "noteId"
 
-    fun newInstance(id: Long): NoteFragment {
-        val fragment = NoteFragment()
-        val args = Bundle()
-        args.putLong(NOTE_ID, id)
-        fragment.arguments = args
-        return fragment
+    companion object {
+        private val NOTE_ID = "noteId"
+
+        fun newInstance(id: Long): NoteFragment {
+            val fragment = NoteFragment()
+            val args = Bundle()
+            if (id != null) {
+                args.putLong(NOTE_ID, id)
+            }
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     override fun onCreateView(

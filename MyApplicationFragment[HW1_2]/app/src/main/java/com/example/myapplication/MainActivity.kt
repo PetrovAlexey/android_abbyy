@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,5 +45,16 @@ class MainActivity : AppCompatActivity() {
         */
 
     }*/
+    private val STACK_NAME = "note"
+    fun openNote(id: Long) {
+        supportFragmentManager.popBackStackImmediate(STACK_NAME,
+            FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.addToBackStack(STACK_NAME)
+
+        val fragment = NoteFragment.newInstance(id)
+        fragmentTransaction.replace(R.id.dynamicFragmentActivityContainer, fragment, "note")
+        fragmentTransaction.commit()
+    }
 
 }

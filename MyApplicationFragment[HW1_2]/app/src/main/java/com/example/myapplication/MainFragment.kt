@@ -27,13 +27,16 @@ class MainFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerView)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.adapter = NoteAdapter(NoteRepository.listNotes())
+        recyclerView.adapter = NoteAdapter(NoteRepository.listNotes()) {id ->
+            (activity as MainActivity).openNote(id)
+        }
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
     }
+
 
     companion object {
         fun newInstance() = MainFragment()

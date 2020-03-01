@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -8,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.activity_partical.view.*
 import java.text.SimpleDateFormat
 
-class NoteViewHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+class NoteViewHolder (itemView: View, private val clickHandler: (Long) -> Unit): RecyclerView.ViewHolder(itemView), View.OnClickListener {
     private var view = itemView
     private var note: Note? = null
 
@@ -17,10 +18,20 @@ class NoteViewHolder (itemView: View): RecyclerView.ViewHolder(itemView), View.O
     }
 
     override fun onClick(v: View?) {
-        var context = view.context
-        var intent = Intent(context, NoteActivity::class.java)
-        intent.putExtra("note", note?.id)
+        if (note != null) {
+            clickHandler(note!!.id)
+        }
+        /*intent.putExtra("note", note?.id)
         context.startActivity(intent)
+        val notefr = NoteFragment().newInstance(note?.id)
+        (getActivity(context) as MainActivity)//.showDetailFragment(note?.id)
+        }
+
+        getSupportFragmentManager()
+            .beginTransaction()
+            .replace(R.id.demoDetailContainer, DetailFragment.newInstance(name), DetailFragment.TAG)
+            .addToBackStack(null)
+            .commit();*/
     }
 
     fun bind(note: Note) {
