@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.db.NoteRepository
 
 class MainFragment : Fragment() {
 
@@ -22,13 +23,12 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.activity_notes, container, false)
-        val activity = activity as Context
+        val view = inflater.inflate(R.layout.fragment_notes, container, false)
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerView)
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.adapter = NoteAdapter(NoteRepository.listNotes()) {id ->
-            (activity as MainActivity).openNote(id)
+        //recyclerView.layoutManager = LinearLayoutManager(view.context)
+        recyclerView.adapter = NoteAdapter(App.noteRepository.listNotes()) { id ->
+            (requireActivity() as MainActivity).openNote(id)
         }
         return view
     }

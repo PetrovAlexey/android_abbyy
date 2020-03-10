@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.activity_partical.view.*
+import com.example.myapplication.db.NoteRepository
+import kotlinx.android.synthetic.main.fragment_partial.view.*
+import java.lang.Exception
+import java.lang.IllegalArgumentException
 
 class NoteFragment : Fragment() {
 
@@ -29,12 +32,12 @@ class NoteFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.activity_partical, container, false)
+        return inflater.inflate(R.layout.fragment_partial, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val note = NoteRepository.getNoteWithId(arguments?.getLong("noteId", 1) ?: 1)
+        val note = App.noteRepository.getNoteWithId(arguments?.getLong("noteId", 1) ?: throw IllegalArgumentException())
         if (note != null) {
             view.noteTextInfo.text = note.text
             view.noteImageView.setImageDrawable(activity?.getDrawable(note.drowableRes))

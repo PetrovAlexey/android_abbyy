@@ -1,10 +1,13 @@
 package com.example.myapplication
 
+import android.content.ContentValues
 import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.myapplication.db.*
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private val layoutResId: Int
         @LayoutRes
         get() = R.layout.activity_fragment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,16 @@ class MainActivity : AppCompatActivity() {
             fm.beginTransaction()
                 .add(R.id.dynamicFragmentActivityContainer, fragment)
                 .commit()
+        }
+
+        for (i in 0 until 5) {
+            val values = ContentValues().apply {
+                put(NoteContract.NoteData.ID, i)
+                put(NoteContract.NoteData.TEXT, "Number ${i}")
+                put(NoteContract.NoteData.DATE, Date().time)
+                put(NoteContract.NoteData.RES_ID, R.drawable.image)
+            }
+            App.noteRepository.createNote(Note(i.toLong(), Date(), "Number", R.drawable.image))
         }
     }
     /*override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,9 +66,17 @@ class MainActivity : AppCompatActivity() {
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.addToBackStack(STACK_NAME)
 
-        val fragment = NoteFragment.newInstance(id)
-        fragmentTransaction.replace(R.id.dynamicFragmentActivityContainer, fragment, "note")
-        fragmentTransaction.commit()
+        if (resources.getBoolean(R.bool.is_phone)) {
+            val fragment = NoteFragment.newInstance(id)
+            fragmentTransaction.replace(R.id.dynamicFragmentActivityContainer, fragment, "note")
+            fragmentTransaction.commit()
+        } else {
+            val fragment = NoteFragment.newInstance(id)
+            fragmentTransaction.replace(R.id.dynamicFragmentActivityContainerNote, fragment, "note")
+            fragmentTransaction.commit()
+        }
+
+
     }
 
 }
