@@ -37,7 +37,7 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val note = App.noteRepository.getNoteWithId(arguments?.getLong("noteId", 1) ?: throw IllegalArgumentException())
+        val note = App.noteRepository.getNote(arguments?.getLong("noteId", 1) ?: throw IllegalArgumentException())
         if (note != null) {
             view.noteTextInfo.text = note.text
             view.noteImageView.setImageDrawable(activity?.getDrawable(note.drowableRes))

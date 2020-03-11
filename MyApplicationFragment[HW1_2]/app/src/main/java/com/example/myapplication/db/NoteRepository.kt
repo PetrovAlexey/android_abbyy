@@ -19,11 +19,10 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
             val db = helper.writableDatabase
 
             val contentValues = ContentValues()
-            contentValues.put(NoteContract.NoteData.ID, note.id)
             contentValues.put(NoteContract.NoteData.DATE, note.date.time)
             contentValues.put(NoteContract.NoteData.TEXT, note.text)
             contentValues.put(NoteContract.NoteData.RES_ID, note.drowableRes)
-            db.insert(NoteContract.TABLE_NAME, null, contentValues)
+            val t = db.insert(NoteContract.TABLE_NAME, null, contentValues)
             db.close()
         }
     }
@@ -35,7 +34,7 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
             val db = helper.readableDatabase
             cursor = db.query(
                 NoteContract.TABLE_NAME,
-                arrayOf(NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
+                arrayOf(NoteContract.NoteData.ID, NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
                 null,
                 null,
                 null,
@@ -63,7 +62,7 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
             val db = helper.readableDatabase
             cursor = db.query(
                 NoteContract.TABLE_NAME,
-                arrayOf(NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
+                arrayOf(NoteContract.NoteData.ID, NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
                 "${NoteContract.NoteData.ID} = ?",
                 arrayOf(id.toString()),
                 null,
