@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.db.NoteRepository
+import kotlinx.coroutines.*
 
 class MainFragment : Fragment() {
 
@@ -27,9 +28,15 @@ class MainFragment : Fragment() {
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerView)
         recyclerView.setHasFixedSize(true)
         //recyclerView.layoutManager = LinearLayoutManager(view.context)
-        recyclerView.adapter = NoteAdapter(App.noteRepository.listNotes()) { id ->
+        val result = GlobalScope.async (Dispatchers.IO) {
+            delay(1000)
+            App.noteRepository.getNotes() }
+        GlobalScope.launch (Dispatchers.Main) {
+            recyclerView.adapter = NoteAdapter( result.await() ) { id ->
             (requireActivity() as MainActivity).openNote(id)
+            }
         }
+
         return view
     }
 

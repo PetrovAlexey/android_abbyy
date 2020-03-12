@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.myapplication.db.NoteRepository
 import kotlinx.android.synthetic.main.fragment_partial.view.*
+import kotlinx.coroutines.*
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
@@ -37,11 +38,18 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val note = App.noteRepository.getNoteWithId(arguments?.getLong("noteId", 1) ?: throw IllegalArgumentException())
-        if (note != null) {
-            view.noteTextInfo.text = note.text
-            view.noteImageView.setImageDrawable(activity?.getDrawable(note.drowableRes))
+        val result = GlobalScope.async (Dispatchers.IO) {
+            delay(1000)
+            App.noteRepository.getNote(arguments?.getLong("noteId", 1) ?: throw IllegalArgumentException())
         }
+        GlobalScope.launch(Dispatchers.Main) {
+            val note = result.await()
+            if (note != null) {
+                view.noteTextInfo.text = note.text
+                view.noteImageView.setImageDrawable(activity?.getDrawable(note.drowableRes))
+            }
+        }
+
     }
 
 }

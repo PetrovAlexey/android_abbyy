@@ -7,54 +7,59 @@ import java.lang.Long.getLong
 import java.util.*
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
+import android.widget.SimpleCursorAdapter
 import androidx.annotation.NonNull
-
-
-
+import androidx.loader.content.CursorLoader
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlin.coroutines.*
 
 class NoteRepository(private val helper: SQLiteOpenHelper) {
 
     fun createNote(note: Note) {
         helper.use { helper ->
             val db = helper.writableDatabase
-
             val contentValues = ContentValues()
-            contentValues.put(NoteContract.NoteData.ID, note.id)
+            //contentValues.put(NoteContract.NoteData.ID, note.id)
             contentValues.put(NoteContract.NoteData.DATE, note.date.time)
             contentValues.put(NoteContract.NoteData.TEXT, note.text)
             contentValues.put(NoteContract.NoteData.RES_ID, note.drowableRes)
-            db.insert(NoteContract.TABLE_NAME, null, contentValues)
+            //db.insert(NoteContract.TABLE_NAME, null, contentValues)
+            val t = db.insert(NoteContract.TABLE_NAME, null, contentValues)
             db.close()
         }
     }
 
     fun getNotes(): List<Note> {
-        val notes = mutableListOf<Note>()
-        var cursor: Cursor? = null
-        try {
-            val db = helper.readableDatabase
-            cursor = db.query(
-                NoteContract.TABLE_NAME,
-                arrayOf(NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
-                null,
-                null,
-                null,
-                null,
-                null
-                )
+            val notes = mutableListOf<Note>()
+            var cursor: Cursor? = null
+            try {
+                val db = helper.readableDatabase
+                //cursorAsync = SimpleCursorAdapter(this, , Cursor c, String[] from, int[] to, int flags)
+                cursor = db.query(
+                    NoteContract.TABLE_NAME,
+                    arrayOf(NoteContract.NoteData.ID, NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
+                    )
 
-            while (cursor.moveToNext()) {
-                val id = cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.ID))
-                val date = Date(cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.DATE)))
-                val text = cursor.getString(cursor.getColumnIndex(NoteContract.NoteData.TEXT))
-                val imageId = cursor.getInt(cursor.getColumnIndex(NoteContract.NoteData.RES_ID))
-                notes.add(Note(id, date, text, imageId))
+                while (cursor.moveToNext()) {
+                    val id = cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.ID))
+                    val date = Date(cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.DATE)))
+                    val text = cursor.getString(cursor.getColumnIndex(NoteContract.NoteData.TEXT))
+                    val imageId = cursor.getInt(cursor.getColumnIndex(NoteContract.NoteData.RES_ID))
+                    notes.add(Note(id, date, text, imageId))
+                }
+            } finally {
+                cursor?.close()
+                helper.close()
             }
-        } finally {
-            cursor?.close()
-            helper.close()
-        }
-        return notes
+            return notes
     }
 
     fun getNote(id: Long): Note? {
@@ -63,7 +68,7 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
             val db = helper.readableDatabase
             cursor = db.query(
                 NoteContract.TABLE_NAME,
-                arrayOf(NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
+                arrayOf(NoteContract.NoteData.ID, NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
                 "${NoteContract.NoteData.ID} = ?",
                 arrayOf(id.toString()),
                 null,
