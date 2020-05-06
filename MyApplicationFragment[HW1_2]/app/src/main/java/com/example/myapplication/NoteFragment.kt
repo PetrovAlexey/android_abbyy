@@ -10,10 +10,12 @@ import kotlinx.android.synthetic.main.fragment_partial.view.*
 import kotlinx.coroutines.*
 import java.lang.Exception
 import java.lang.IllegalArgumentException
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+import java.util.*
 
 class NoteFragment : Fragment() {
-
-
     companion object {
         private val NOTE_ID = "noteId"
 
@@ -38,15 +40,24 @@ class NoteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val result = GlobalScope.async (Dispatchers.IO) {
-            delay(1000)
-            App.noteRepository.getNote(arguments?.getLong("noteId", 1) ?: throw IllegalArgumentException())
+            //delay(1000)
+            App.noteRepository.getNote(arguments?.getLong(NOTE_ID, 1) ?: throw IllegalArgumentException())
         }
         GlobalScope.launch(Dispatchers.Main) {
             val note = result.await()
             if (note != null) {
                 view.noteTextInfo.text = note.text
-                view.noteImageView.setImageDrawable(activity?.getDrawable(note.drowableRes))
+                Picasso
+                    .get()
+                    .load("file://"+note.drowableRes)
+                    .error(R.drawable.image)
+                    .fit()
+                    .centerInside()
+                    .into(view.noteImageView);
+
+                //view.noteImageView.setImageDrawable(activity?.getDrawable(note.drowableRes))
             }
         }
 

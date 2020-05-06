@@ -29,7 +29,7 @@ class MainFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         //recyclerView.layoutManager = LinearLayoutManager(view.context)
         val result = GlobalScope.async (Dispatchers.IO) {
-            delay(1000)
+            //delay(1000)
             App.noteRepository.getNotes() }
         GlobalScope.launch (Dispatchers.Main) {
             recyclerView.adapter = NoteAdapter( result.await() ) { id ->

@@ -3,23 +3,13 @@ package com.example.myapplication.db
 import android.database.Cursor
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.myapplication.R
-import java.lang.Long.getLong
 import java.util.*
 import android.content.ContentValues
-import android.database.sqlite.SQLiteDatabase
-import android.widget.SimpleCursorAdapter
-import androidx.annotation.NonNull
-import androidx.loader.content.CursorLoader
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.coroutines.*
 
 class NoteRepository(private val helper: SQLiteOpenHelper) {
 
-    fun createNote(note: Note) {
-        helper.use { helper ->
+    fun createNote(note: Note) :Long{
+        // why not hepler. use ?
             val db = helper.writableDatabase
             val contentValues = ContentValues()
             //contentValues.put(NoteContract.NoteData.ID, note.id)
@@ -29,7 +19,18 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
             //db.insert(NoteContract.TABLE_NAME, null, contentValues)
             val t = db.insert(NoteContract.TABLE_NAME, null, contentValues)
             db.close()
+        return t
+    }
+
+    fun deleteNote(id: Long) :Boolean {
+        var result = false
+        try{
+            val db = helper.writableDatabase
+            result  = db.delete(NoteContract.TABLE_NAME, NoteContract.NoteData.ID + "=" + id, null) > 0
+        } finally {
+            helper.close()
         }
+        return result
     }
 
     fun getNotes(): List<Note> {
@@ -52,7 +53,7 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
                     val id = cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.ID))
                     val date = Date(cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.DATE)))
                     val text = cursor.getString(cursor.getColumnIndex(NoteContract.NoteData.TEXT))
-                    val imageId = cursor.getInt(cursor.getColumnIndex(NoteContract.NoteData.RES_ID))
+                    val imageId = cursor.getString(cursor.getColumnIndex(NoteContract.NoteData.RES_ID))
                     notes.add(Note(id, date, text, imageId))
                 }
             } finally {
@@ -79,7 +80,7 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
                 val _id = cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.ID))
                 val date = Date(cursor.getLong(cursor.getColumnIndex(NoteContract.NoteData.DATE)))
                 val text = cursor.getString(cursor.getColumnIndex(NoteContract.NoteData.TEXT))
-                val imageId = cursor.getInt(cursor.getColumnIndex(NoteContract.NoteData.RES_ID))
+                val imageId = cursor.getString(cursor.getColumnIndex(NoteContract.NoteData.RES_ID))
                 return Note(_id, date, text, imageId)
             }
         } finally {
@@ -89,70 +90,40 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
         return null
     }
 
-    private val NOTES: MutableMap<Long, Note> = hashMapOf(
-        1L to Note(
-            1,
-            Date(1576174880000),
-            "First note",
-            R.drawable.image
-        ),
-        2L to Note(
-            2,
-            Date(1576174880000),
-            "Second note",
-            R.drawable.image
-        ),
-        3L to Note(
-            3,
-            Date(1576174880000),
-            "Third note",
-            R.drawable.image
-        ),
-        4L to Note(
-            4,
-            Date(1576174880000),
-            "Fourth note",
-            R.drawable.image
-        ),
-        5L to Note(
-            5,
-            Date(1576174880000),
-            "Fifth note",
-            R.drawable.image
-        ),
-        6L to Note(
-            5,
-            Date(1576174880000),
-            "Fifth note",
-            R.drawable.image
-        ),
-        7L to Note(
-            5,
-            Date(1576174880000),
-            "Fifth note",
-            R.drawable.image
-        ),
-        8L to Note(
-            5,
-            Date(1576174880000),
-            "Fifth note",
-            R.drawable.image
-        ),
-        9L to Note(
-            5,
-            Date(1576174880000),
-            "Fifth note",
-            R.drawable.image
-        ),
-        10L to Note(
-            5,
-            Date(1576174880000),
-            "Fifth note",
-            R.drawable.image
-        )
-    )
-
-    fun listNotes(): List<Note> = NOTES.values.toList()
-
-    fun getNoteWithId(id: Long): Note? = NOTES[id]
+//    private val NOTES: MutableMap<Long, Note> = hashMapOf(
+//        1L to Note(
+//            UUID.fromString("1"),
+//            Date(1576174880000),
+//            "First note",
+//            R.drawable.image.toString()
+//        ),
+//        2L to Note(
+//            "2",
+//            Date(1576174880000),
+//            "Second note",
+//            R.drawable.image.toString()
+//        ),
+//        3L to Note(
+//            "3",
+//            Date(1576174880000),
+//            "Third note",
+//            R.drawable.image.toString()
+//        ),
+//        4L to Note(
+//            "4",
+//            Date(1576174880000),
+//            "Fourth note",
+//            R.drawable.image.toString()
+//        ),
+//        5L to Note(
+//            "5",
+//            Date(1576174880000),
+//            "Fifth note",
+//            R.drawable.image.toString()
+//        )
+//    )
+//
+//    fun listNotes(): List<Note> = NOTES.values.toList()
+//
+//    fun getNoteWithId(id: Long): Note? = NOTES[id]
 }

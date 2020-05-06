@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.db.Note
+import java.util.*
 
 class NoteAdapter (private val notes: List<Note>, private val clickHandler: (Long) -> Unit): RecyclerView.Adapter<NoteViewHolder>() {
 

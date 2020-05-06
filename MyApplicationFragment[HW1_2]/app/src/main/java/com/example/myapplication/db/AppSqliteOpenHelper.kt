@@ -16,7 +16,7 @@ class AppSqliteOpenHelper(val context: Context) : SQLiteOpenHelper(context, DB_N
     override fun onCreate(db: SQLiteDatabase?) {
         Log.d("Comment", "OnCreate")
         NoteContract.createTable(db)
-        NoteContract.migrateData(db)
+        //NoteContract.migrateData(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
