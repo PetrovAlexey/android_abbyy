@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.Window
 import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
 
 
 class MainActivity : AppCompatActivity() {
@@ -126,6 +127,9 @@ class MainActivity : AppCompatActivity() {
         val inflater = popupMenu.menuInflater
         inflater.inflate(R.menu.header_menu, popupMenu.menu)
         popupMenu.show()
+
+        val id =
+        //val id = this.findViewById<CardView>(R.id.note_list_item).id
 
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId) {

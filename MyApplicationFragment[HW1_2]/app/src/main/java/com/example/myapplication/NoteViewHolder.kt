@@ -22,6 +22,7 @@ class NoteViewHolder (itemView: View, private val clickHandler: (Long) -> Unit):
         }
     }
 
+
     fun bind(note: Note) {
         this.note = note
         view.textInfo.text = note.text

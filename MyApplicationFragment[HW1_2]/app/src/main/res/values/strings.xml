@@ -11,5 +11,6 @@
     <string name="photoimage">PhotoImage</string>
     <string name="share">Share</string>
     <string name="delete">Delete</string>
+    <string name="Options">⋮</string>
 
 </resources>

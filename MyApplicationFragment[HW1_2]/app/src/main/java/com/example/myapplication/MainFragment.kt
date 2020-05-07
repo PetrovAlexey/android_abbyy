@@ -32,7 +32,7 @@ class MainFragment : Fragment() {
             //delay(1000)
             App.noteRepository.getNotes() }
         GlobalScope.launch (Dispatchers.Main) {
-            recyclerView.adapter = NoteAdapter( result.await() ) { id ->
+            recyclerView.adapter = NoteAdapter( result.await(), context!! ) { id ->
             (requireActivity() as MainActivity).openNote(id)
             }
         }
