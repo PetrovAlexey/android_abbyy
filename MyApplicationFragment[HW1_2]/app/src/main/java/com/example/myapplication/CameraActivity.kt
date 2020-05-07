@@ -135,6 +135,7 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedListener {
                     // Task failed with an exception
                     e.printStackTrace()
                 }
+        //TODO: Make asycn waiting
         while(!result.isComplete){
         }
         resultText = result.getResult()?.text.toString()
@@ -150,8 +151,6 @@ class CameraActivity : AppCompatActivity(), ImageCapture.OnImageSavedListener {
         setResult(Activity.RESULT_OK, data);
 
         finish()
-
-        val t = 0
     }
 
 

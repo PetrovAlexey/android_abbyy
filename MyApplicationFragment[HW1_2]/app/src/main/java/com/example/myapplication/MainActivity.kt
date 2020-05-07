@@ -15,12 +15,6 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.FragmentManager
 import com.example.myapplication.db.*
 import java.util.*
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.view.Window
-import androidx.appcompat.app.AlertDialog
-import androidx.cardview.widget.CardView
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         @LayoutRes
         get() = R.layout.activity_fragment
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutResId)
@@ -37,10 +30,8 @@ class MainActivity : AppCompatActivity() {
         val fm = supportFragmentManager
         var fragment = fm.findFragmentById(R.id.dynamicFragmentActivityContainer)
 
-        // ensures fragments already created will not be created
         if (fragment == null) {
             fragment = MainFragment.newInstance()
-            // create and commit a fragment transaction
             fm.beginTransaction()
                 .add(R.id.dynamicFragmentActivityContainer, fragment)
                 .commit()
@@ -62,8 +53,6 @@ class MainActivity : AppCompatActivity() {
         btn.setOnClickListener {
             val intent = Intent(this, CameraActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE)
-            //val intent = Intent(this, CameraActivity::class.java)
-            //startActivity(intent)
         }
     }
 
@@ -91,11 +80,8 @@ class MainActivity : AppCompatActivity() {
                         fragmentTransaction.replace(R.id.dynamicFragmentActivityContainerNote, fragment, "note")
                         fragmentTransaction.commitAllowingStateLoss();
                     }
-
-//                this.openNote(result)
-               // resultTextView.setText(result)
             } else {
-                //Toast.makeText(this, R.string.result_cancelled, Toast.LENGTH_SHORT).show()
+
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)

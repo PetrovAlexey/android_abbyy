@@ -22,7 +22,7 @@
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr" />
-
+        <service android:name=".BackupIntentService" />
         <activity android:name=".CameraActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
