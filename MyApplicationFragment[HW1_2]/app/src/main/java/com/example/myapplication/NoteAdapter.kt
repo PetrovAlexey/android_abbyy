@@ -1,15 +1,21 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.db.Note
 import kotlinx.android.synthetic.main.element.view.*
+
+
+
 
 
 class NoteAdapter (private val notes: List<Note>, private val mCtx: Context, private val clickHandler: (Long) -> Unit): RecyclerView.Adapter<NoteViewHolder>() {
@@ -20,6 +26,7 @@ class NoteAdapter (private val notes: List<Note>, private val mCtx: Context, pri
         val layoutInflater = LayoutInflater.from(parent.context).inflate(R.layout.element, parent, false)
         return NoteViewHolder(layoutInflater, clickHandler)
     }
+
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val note = notes[position]
@@ -33,6 +40,28 @@ class NoteAdapter (private val notes: List<Note>, private val mCtx: Context, pri
                     when (item.itemId) {
                         R.id.share -> {
                             //TODO Implement sharing
+                            val sendIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_TEXT, note.text)
+                                //putExtra(Intent.EXTRA_STREAM, imageUri)
+                                //type = "image/jpeg"
+                                //addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                type = "text/plain"
+                            }
+
+                            startActivity(mCtx, sendIntent, null)
+
+                            /*
+                            val imageUri = Uri.parse(
+                                note.drowableRes
+                            )
+
+                            val shareIntent: Intent = Intent().apply {
+                                action = Intent.ACTION_SEND
+                                putExtra(Intent.EXTRA_STREAM, imageUri)
+                                type = "image/jpeg"
+                            }
+                            startActivity(mCtx, Intent.createChooser(shareIntent, "Send to"), null)*/
                         }
                         R.id.delete -> {
                             val builder = AlertDialog.Builder(mCtx)
