@@ -1,21 +1,14 @@
 package com.example.myapplication
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Dialog
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.FragmentManager
-import com.example.myapplication.db.*
+import com.example.myapplication.db.Note
 import java.util.*
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -49,44 +42,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        val btn = findViewById<ImageView>(R.id.AddButton)
-        btn.setOnClickListener {
-            val intent = Intent(this, CameraActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE)
-        }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE")
-        super.onSaveInstanceState(outState)
-    }
+//    override fun onSaveInstanceState(outState: Bundle) {
+//        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE")
+//        super.onSaveInstanceState(outState)
+//    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (REQUEST_CODE == requestCode) {
-            if (resultCode == Activity.RESULT_OK) {
-                val result = data!!.getLongExtra(CameraActivity.INDEX_RESULT_KEY, 0)
-
-                    /*supportFragmentManager.popBackStackImmediate(STACK_NAME,
-                    FragmentManager.POP_BACK_STACK_INCLUSIVE)*/
-                    val fragmentTransaction = supportFragmentManager.beginTransaction()
-                    fragmentTransaction.addToBackStack(STACK_NAME)
-
-                    if (resources.getBoolean(R.bool.is_phone)) {
-                        val fragment = NoteFragment.newInstance(result)
-                        fragmentTransaction.replace(R.id.dynamicFragmentActivityContainer, fragment, "note")
-                        fragmentTransaction.commitAllowingStateLoss();
-                    } else {
-                        val fragment = NoteFragment.newInstance(result)
-                        fragmentTransaction.replace(R.id.dynamicFragmentActivityContainerNote, fragment, "note")
-                        fragmentTransaction.commitAllowingStateLoss();
-                    }
-            } else {
-
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
 
     private val REQUEST_CODE = 0
     private val STACK_NAME = "note"
