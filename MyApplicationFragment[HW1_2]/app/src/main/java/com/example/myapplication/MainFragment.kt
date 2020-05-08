@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.db.NoteRepository
 import kotlinx.coroutines.*
+import android.text.method.ScrollingMovementMethod
+import android.widget.TextView
+
 
 class MainFragment : Fragment() {
 
