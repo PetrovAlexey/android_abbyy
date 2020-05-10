@@ -6,7 +6,6 @@ import com.example.myapplication.db.Note
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.element.view.*
 import java.text.SimpleDateFormat
-import java.util.*
 
 class NoteViewHolder (itemView: View, private val clickHandler: (Long) -> Unit): RecyclerView.ViewHolder(itemView), View.OnClickListener {
     private var view = itemView
@@ -34,6 +33,5 @@ class NoteViewHolder (itemView: View, private val clickHandler: (Long) -> Unit):
             .fit()
             .centerInside()
             .into(view.imageView)
-        //view.imageView.setImageDrawable(view.context.getDrawable(note.drowableRes.))
     }
 }

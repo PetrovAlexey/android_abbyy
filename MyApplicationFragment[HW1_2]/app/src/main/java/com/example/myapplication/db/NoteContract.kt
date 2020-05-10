@@ -1,10 +1,7 @@
 package com.example.myapplication.db
 
-import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
-import com.example.myapplication.R
-import java.util.*
 
 object NoteContract {
 
@@ -36,8 +33,5 @@ object NoteContract {
 
         fun createTable(db: SQLiteDatabase?) {
             db?.execSQL(SQL_CREATE_TABLE)
-        }
-
-        fun migrateData(db: SQLiteDatabase?) {
         }
     }

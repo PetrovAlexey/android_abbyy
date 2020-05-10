@@ -2,7 +2,6 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,9 +12,11 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.db.Note
 import kotlinx.android.synthetic.main.element.view.*
-
-
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import java.lang.IllegalArgumentException
 
 
 class NoteAdapter (private val notes: List<Note>, private val mCtx: Context, private val clickHandler: (Long) -> Unit): RecyclerView.Adapter<NoteViewHolder>() {
@@ -39,29 +40,13 @@ class NoteAdapter (private val notes: List<Note>, private val mCtx: Context, pri
                 popup.setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.share -> {
-                            //TODO Implement sharing
                             val sendIntent: Intent = Intent().apply {
                                 action = Intent.ACTION_SEND
                                 putExtra(Intent.EXTRA_TEXT, note.text)
-                                //putExtra(Intent.EXTRA_STREAM, imageUri)
-                                //type = "image/jpeg"
-                                //addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                 type = "text/plain"
                             }
 
                             startActivity(mCtx, sendIntent, null)
-
-                            /*
-                            val imageUri = Uri.parse(
-                                note.drowableRes
-                            )
-
-                            val shareIntent: Intent = Intent().apply {
-                                action = Intent.ACTION_SEND
-                                putExtra(Intent.EXTRA_STREAM, imageUri)
-                                type = "image/jpeg"
-                            }
-                            startActivity(mCtx, Intent.createChooser(shareIntent, "Send to"), null)*/
                         }
                         R.id.delete -> {
                             val builder = AlertDialog.Builder(mCtx)
@@ -69,9 +54,17 @@ class NoteAdapter (private val notes: List<Note>, private val mCtx: Context, pri
                             builder.setMessage("Are you want to delete this article?")
 
                             builder.setPositiveButton("Ok"){dialog, which ->
-                                App.noteRepository.deleteNote(note.id)
-                                Toast.makeText(mCtx,"Article deleted.", Toast.LENGTH_SHORT).show()
-                                notifyItemRemoved(position)
+                                val result = GlobalScope.async (Dispatchers.IO) {
+                                    App.noteRepository.deleteNote(note.id)
+                                }
+                                GlobalScope.launch(Dispatchers.Main) {
+                                    if (result.await()) {
+                                        Toast.makeText(mCtx,"Article deleted.", Toast.LENGTH_SHORT).show()
+                                        notifyItemRemoved(position)
+                                    } else {
+                                        Toast.makeText(mCtx,"Error.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                             }
 
                             builder.setNeutralButton("Cancel"){_,_ ->

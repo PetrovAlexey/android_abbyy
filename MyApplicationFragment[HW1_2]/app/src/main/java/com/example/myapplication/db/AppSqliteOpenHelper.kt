@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
 
-class AppSqliteOpenHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, VERSION) {
+class AppSqliteOpenHelper(val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, VERSION), AutoCloseable {
 
     companion object {
         const val DB_NAME = "Notes.db"
@@ -14,13 +14,9 @@ class AppSqliteOpenHelper(val context: Context) : SQLiteOpenHelper(context, DB_N
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
-        Log.d("Comment", "OnCreate")
         NoteContract.createTable(db)
-        //NoteContract.migrateData(db)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        Log.d("Comment", "Alarm")
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

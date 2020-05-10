@@ -1,14 +1,9 @@
 package com.example.myapplication
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import com.example.myapplication.db.Note
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,27 +25,8 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
 
-        if (App.noteRepository.getNotes().isEmpty()) {
-            for (i in 0 until 5) {
-//                val values = ContentValues().apply {
-//                    put(NoteContract.NoteData.ID, UUID.randomUUID().toString())
-//                    put(NoteContract.NoteData.TEXT, "Number ${i}")
-//                    put(NoteContract.NoteData.DATE, Date().time)
-//                    put(NoteContract.NoteData.RES_ID, R.drawable.image)
-//                }
-                App.noteRepository.createNote(Note(i.toLong(), Date(), "$i Number", R.drawable.image.toString()))
-            }
-        }
-
     }
 
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        outState.putString("WORKAROUND_FOR_BUG_19917_KEY", "WORKAROUND_FOR_BUG_19917_VALUE")
-//        super.onSaveInstanceState(outState)
-//    }
-
-
-    private val REQUEST_CODE = 0
     private val STACK_NAME = "note"
 
     fun openNote(id: Long) {
@@ -62,11 +38,11 @@ class MainActivity : AppCompatActivity() {
         if (resources.getBoolean(R.bool.is_phone)) {
             val fragment = NoteFragment.newInstance(id)
             fragmentTransaction.replace(R.id.dynamicFragmentActivityContainer, fragment, "note")
-            fragmentTransaction.commit()
+            fragmentTransaction.commitAllowingStateLoss()
         } else {
             val fragment = NoteFragment.newInstance(id)
             fragmentTransaction.replace(R.id.dynamicFragmentActivityContainerNote, fragment, "note")
-            fragmentTransaction.commit()
+            fragmentTransaction.commitAllowingStateLoss()
         }
     }
 

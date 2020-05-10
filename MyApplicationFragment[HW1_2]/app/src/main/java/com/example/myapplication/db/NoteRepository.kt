@@ -1,36 +1,30 @@
 package com.example.myapplication.db
 
+import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.myapplication.R
 import java.util.*
-import android.content.ContentValues
 
 class NoteRepository(private val helper: SQLiteOpenHelper) {
 
-    fun createNote(note: Note) :Long{
-        // why not hepler. use ?
+    fun createNote(date: Date, text: String, drowableRes: String) :Long {
+        helper.use { helper ->
             val db = helper.writableDatabase
             val contentValues = ContentValues()
-            //contentValues.put(NoteContract.NoteData.ID, note.id)
-            contentValues.put(NoteContract.NoteData.DATE, note.date.time)
-            contentValues.put(NoteContract.NoteData.TEXT, note.text)
-            contentValues.put(NoteContract.NoteData.RES_ID, note.drowableRes)
-            //db.insert(NoteContract.TABLE_NAME, null, contentValues)
+            contentValues.put(NoteContract.NoteData.DATE, date.time)
+            contentValues.put(NoteContract.NoteData.TEXT, text)
+            contentValues.put(NoteContract.NoteData.RES_ID, drowableRes)
             val t = db.insert(NoteContract.TABLE_NAME, null, contentValues)
             db.close()
-        return t
+            return t
+        }
     }
 
     fun deleteNote(id: Long) :Boolean {
-        var result = false
-        try{
+        helper.use { helper ->
             val db = helper.writableDatabase
-            result  = db.delete(NoteContract.TABLE_NAME, NoteContract.NoteData.ID + "=" + id, null) > 0
-        } finally {
-            helper.close()
+            return db.delete(NoteContract.TABLE_NAME, NoteContract.NoteData.ID + "=" + id, null) > 0
         }
-        return result
     }
 
     fun getNotes(): List<Note> {
@@ -38,7 +32,6 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
             var cursor: Cursor? = null
             try {
                 val db = helper.readableDatabase
-                //cursorAsync = SimpleCursorAdapter(this, , Cursor c, String[] from, int[] to, int flags)
                 cursor = db.query(
                     NoteContract.TABLE_NAME,
                     arrayOf(NoteContract.NoteData.ID, NoteContract.NoteData.DATE, NoteContract.NoteData.TEXT, NoteContract.NoteData.RES_ID),
@@ -61,6 +54,19 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
                 helper.close()
             }
             return notes
+    }
+
+    fun editNote(date: Date, text: String, drowableRes: String, id: Long): Int {
+        helper.use { helper ->
+            val db = helper.writableDatabase
+            val contentValues = ContentValues()
+            contentValues.put(NoteContract.NoteData.DATE, date.time)
+            contentValues.put(NoteContract.NoteData.TEXT, text)
+            contentValues.put(NoteContract.NoteData.RES_ID, drowableRes)
+            val t = db.update(NoteContract.TABLE_NAME, contentValues, "_id="+id, null)
+            db.close()
+            return t
+        }
     }
 
     fun getNote(id: Long): Note? {
@@ -89,41 +95,4 @@ class NoteRepository(private val helper: SQLiteOpenHelper) {
         }
         return null
     }
-
-//    private val NOTES: MutableMap<Long, Note> = hashMapOf(
-//        1L to Note(
-//            UUID.fromString("1"),
-//            Date(1576174880000),
-//            "First note",
-//            R.drawable.image.toString()
-//        ),
-//        2L to Note(
-//            "2",
-//            Date(1576174880000),
-//            "Second note",
-//            R.drawable.image.toString()
-//        ),
-//        3L to Note(
-//            "3",
-//            Date(1576174880000),
-//            "Third note",
-//            R.drawable.image.toString()
-//        ),
-//        4L to Note(
-//            "4",
-//            Date(1576174880000),
-//            "Fourth note",
-//            R.drawable.image.toString()
-//        ),
-//        5L to Note(
-//            "5",
-//            Date(1576174880000),
-//            "Fifth note",
-//            R.drawable.image.toString()
-//        )
-//    )
-//
-//    fun listNotes(): List<Note> = NOTES.values.toList()
-//
-//    fun getNoteWithId(id: Long): Note? = NOTES[id]
 }

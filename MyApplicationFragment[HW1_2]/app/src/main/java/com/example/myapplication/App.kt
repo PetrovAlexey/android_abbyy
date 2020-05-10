@@ -1,11 +1,9 @@
 package com.example.myapplication
 
 import android.app.Application
-import android.content.ContentValues
-import android.content.Context
 import android.content.Intent
-import com.example.myapplication.db.*
-import java.util.*
+import com.example.myapplication.db.AppSqliteOpenHelper
+import com.example.myapplication.db.NoteRepository
 
 class App: Application() {
     companion object {
@@ -17,12 +15,8 @@ class App: Application() {
         val helper = AppSqliteOpenHelper(this)
         noteRepository = NoteRepository(helper)
 
-        val notes = noteRepository.getNotes()
         val intentMyIntentService = Intent(this, BackupIntentService::class.java)
-        startService(
-            intentMyIntentService
-                .putExtra("Notes", notes.toString())
-        )
+        startService(intentMyIntentService)
     }
 
 }

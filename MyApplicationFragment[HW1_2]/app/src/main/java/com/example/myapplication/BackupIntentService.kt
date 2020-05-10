@@ -16,34 +16,22 @@ import java.io.IOException
 
 
 class BackupIntentService : IntentService("Backup") {
+
     private val FILE_NAME: String = "Backup"
 
     override fun onHandleIntent(intent: Intent?) {
-        val data = intent?.getStringExtra("Notes")
-        Log.d("Backup", "onHandleIntent start: ");
-        if (data != null) {
-            saveText(data)
-        }
+        val data = App.noteRepository.getNotes().toString()
+        saveText(data)
     }
 
     private fun saveText(data: String) {
-        var fos: FileOutputStream? = null
         try {
-            fos = openFileOutput(FILE_NAME, Context.MODE_PRIVATE)
-            fos!!.write(data.toByteArray())
-            Toast.makeText(this, "Backup saved", Toast.LENGTH_SHORT).show()
-        } catch (ex: IOException) {
-
-            Toast.makeText(this, ex.message, Toast.LENGTH_SHORT).show()
-        } finally {
-            try {
-                fos?.close()
-            } catch (ex: IOException) {
-
-                Toast.makeText(this, ex.message, Toast.LENGTH_SHORT).show()
+            openFileOutput(FILE_NAME, Context.MODE_PRIVATE).use { fos ->
+                fos!!.write(data.toByteArray())
+                Toast.makeText(this, "Backup saved", Toast.LENGTH_SHORT).show()
             }
-
+        } catch (ex: IOException) {
+            Toast.makeText(this, ex.message, Toast.LENGTH_SHORT).show()
         }
     }
-
 }

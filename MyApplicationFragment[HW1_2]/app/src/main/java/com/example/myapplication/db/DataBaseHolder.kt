@@ -8,17 +8,13 @@ import java.util.concurrent.locks.ReentrantLock
 
 class DatabaseHolder(context: Context) {
 
-    public val appSqliteOpenHelper: AppSqliteOpenHelper
+    public val appSqliteOpenHelper: AppSqliteOpenHelper = AppSqliteOpenHelper(context)
 
     private var sqLiteDatabase: SQLiteDatabase? = null
 
     private var databaseOpenCloseBalance: Int = 0
 
     private val reentrantLock = ReentrantLock()
-
-    init {
-        appSqliteOpenHelper = AppSqliteOpenHelper(context)
-    }
 
     fun open(): SQLiteDatabase? {
         try {
