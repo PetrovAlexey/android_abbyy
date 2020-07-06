@@ -7,9 +7,9 @@ The application is designed to recognize text from images. It is possible to del
 
 ### Main fragment with RecyclerView
 
-![alt text](https://github.com/PetrovAlexey/android_abbyy/blob/master/images/MainFragment.jpg?raw=true | width=100)
+![alt text](https://github.com/PetrovAlexey/android_abbyy/blob/master/images/MainFragment.jpg?raw=true)
 
 ### Detail fragment
 
-![alt text](https://github.com/PetrovAlexey/android_abbyy/blob/master/images/Fragment.jpg?raw=true| width=100)
+![alt text](https://github.com/PetrovAlexey/android_abbyy/blob/master/images/Fragment.jpg?raw=true)
 
